@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_1/home/counter/counter_page.dart';
 import 'package:project_1/home/settings/settings_page.dart';
 import 'package:project_1/home/user/user_page.dart';
 
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 2,
+      length: 3,
       vsync: this,
     );
   }
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage>
       children: const [
         UserPage(),
         SettingsPage(),
+        CounterPage(),
       ],
     );
   }
@@ -66,6 +68,10 @@ class _HomePageState extends State<HomePage>
         Tab(
           icon: Icon(Icons.settings),
           text: 'Settings',
+        ),
+        Tab(
+          icon: Icon(Icons.numbers),
+          text: 'Counter',
         ),
       ],
     );

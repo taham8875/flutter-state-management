@@ -7,7 +7,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _usernameController = TextEditingController();
+    final TextEditingController usernameController = TextEditingController();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           TextField(
-            controller: _usernameController,
+            controller: usernameController,
             decoration: const InputDecoration(
               labelText: 'Enter new username',
             ),
@@ -30,11 +30,9 @@ class SettingsPage extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              context
-                  .read<UserProvider>()
-                  .setUsername(_usernameController.text);
+              context.read<UserProvider>().setUsername(usernameController.text);
               FocusManager.instance.primaryFocus?.unfocus();
-              _usernameController.clear();
+              usernameController.clear();
             },
             child: const Text('Update Username'),
           ),
