@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:state_management_with_query_params/user/favorite_color/favorite_color_page.dart';
+import 'package:state_management_with_query_params/user/username/username_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -94,14 +97,28 @@ class _UserPageState extends State<UserPage>
   }
 
   Widget _getUsernameChild() {
-    return const Center(
-      child: Text('Username'),
+    return Center(
+      child: ElevatedButton(
+        child: const Text(
+          'Go to username page',
+        ),
+        onPressed: () {
+          GoRouter.of(context).go(UsernamePage.routePath);
+        },
+      ),
     );
   }
 
   Widget _getUserFavoriteColorChild() {
-    return const Center(
-      child: Text('Favorite color'),
+    return Center(
+      child: ElevatedButton(
+        child: const Text(
+          'Go to favorite color page',
+        ),
+        onPressed: () {
+          GoRouter.of(context).go(FavoriteColorPage.routePath);
+        },
+      ),
     );
   }
 }

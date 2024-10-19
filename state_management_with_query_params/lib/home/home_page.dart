@@ -3,6 +3,9 @@ import 'package:state_management_with_query_params/settings/settings_page.dart';
 import 'package:state_management_with_query_params/user/user_page.dart';
 
 class HomePage extends StatefulWidget {
+  static const String routePath = '/home';
+  static const String routeName = 'home';
+
   const HomePage({super.key});
 
   @override
