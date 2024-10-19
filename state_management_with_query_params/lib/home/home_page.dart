@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:state_management_with_query_params/enums/home_page_tab.dart';
+import 'package:state_management_with_query_params/enums/user_page_tab.dart';
 import 'package:state_management_with_query_params/settings/settings_page.dart';
 import 'package:state_management_with_query_params/user/user_page.dart';
 
@@ -6,7 +9,14 @@ class HomePage extends StatefulWidget {
   static const String routePath = '/home';
   static const String routeName = 'home';
 
-  const HomePage({super.key});
+  final HomePageTab? tab;
+  final UserPageTab? subTab;
+
+  const HomePage({
+    super.key,
+    required this.tab,
+    required this.subTab,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,9 +30,44 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 2,
+      length: HomePageTab.values.length,
       vsync: this,
+      initialIndex: widget.tab == HomePageTab.settings ? 1 : 0,
     );
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        if (_tabController.index == 0) {
+          final queryParams = GoRouterState.of(context).uri.queryParameters;
+
+          final newQueryParams = {
+            ...queryParams,
+            'tab': HomePageTab.user.name,
+          };
+
+          final newUri = GoRouterState.of(context).uri.replace(
+                queryParameters: newQueryParams,
+              );
+
+          GoRouter.of(context).replace(
+            newUri.toString(),
+          );
+        } else if (_tabController.index == 1) {
+          final queryParams = GoRouterState.of(context).uri.queryParameters;
+          final newQueryParams = {
+            ...queryParams,
+            'tab': HomePageTab.settings.name,
+          };
+
+          final newUri = GoRouterState.of(context).uri.replace(
+                queryParameters: newQueryParams,
+              );
+          GoRouter.of(context).replace(
+            newUri.toString(),
+          );
+        }
+      }
+    });
   }
 
   @override
@@ -49,9 +94,11 @@ class _HomePageState extends State<HomePage>
   Widget _getBody() {
     return TabBarView(
       controller: _tabController,
-      children: const [
-        UserPage(),
-        SettingsPage(),
+      children: [
+        UserPage(
+          subTab: widget.subTab,
+        ),
+        const SettingsPage(),
       ],
     );
   }
@@ -61,8 +108,8 @@ class _HomePageState extends State<HomePage>
       controller: _tabController,
       tabs: const [
         Tab(
-          icon: Icon(Icons.home),
-          text: 'Home',
+          icon: Icon(Icons.person),
+          text: 'User',
         ),
         Tab(
           icon: Icon(Icons.settings),

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:state_management_with_query_params/enums/user_page_tab.dart';
 import 'package:state_management_with_query_params/user/favorite_color/favorite_color_page.dart';
 import 'package:state_management_with_query_params/user/username/username_page.dart';
 
 class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+  final UserPageTab? subTab;
+
+  const UserPage({
+    super.key,
+    required this.subTab,
+  });
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -18,9 +24,46 @@ class _UserPageState extends State<UserPage>
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 2,
+      length: UserPageTab.values.length,
       vsync: this,
+      initialIndex: widget.subTab == UserPageTab.favoriteColor ? 1 : 0,
     );
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        if (_tabController.index == 0) {
+          final queryParams = GoRouterState.of(context).uri.queryParameters;
+
+          final newQueryParams = {
+            ...queryParams,
+            'subTab': UserPageTab.username.name,
+          };
+
+          final newUri = GoRouterState.of(context).uri.replace(
+                queryParameters: newQueryParams,
+              );
+
+          GoRouter.of(context).replace(
+            newUri.toString(),
+          );
+        } else if (_tabController.index == 1) {
+          final queryParams = GoRouterState.of(context).uri.queryParameters;
+
+          final newQueryParams = {
+            ...queryParams,
+            'subTab': UserPageTab.favoriteColor.name,
+          };
+
+          final newUri = GoRouterState.of(context).uri.replace(
+                queryParameters: newQueryParams,
+              );
+
+          GoRouter.of(context).replace(
+            newUri.toString(),
+          );
+        }
+      }
+    });
   }
 
   @override
@@ -77,7 +120,7 @@ class _UserPageState extends State<UserPage>
               text: 'Username',
             ),
             Tab(
-              text: 'Favourite color',
+              text: 'Favorite color',
             ),
           ],
         ),
@@ -103,7 +146,7 @@ class _UserPageState extends State<UserPage>
           'Go to username page',
         ),
         onPressed: () {
-          GoRouter.of(context).go(UsernamePage.routePath);
+          GoRouter.of(context).push(UsernamePage.routePath);
         },
       ),
     );
@@ -116,7 +159,7 @@ class _UserPageState extends State<UserPage>
           'Go to favorite color page',
         ),
         onPressed: () {
-          GoRouter.of(context).go(FavoriteColorPage.routePath);
+          GoRouter.of(context).push(FavoriteColorPage.routePath);
         },
       ),
     );

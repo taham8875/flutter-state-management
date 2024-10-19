@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class FavoriteColorPage extends StatelessWidget {
   static const String routePath = '/favorite_color';
@@ -31,7 +32,7 @@ class FavoriteColorPage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             )
           ],

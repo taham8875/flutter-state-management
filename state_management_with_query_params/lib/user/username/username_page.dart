@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class UsernamePage extends StatelessWidget {
   static const String routePath = '/username';
@@ -31,7 +32,7 @@ class UsernamePage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             )
           ],
